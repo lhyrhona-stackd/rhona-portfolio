@@ -150,6 +150,32 @@ function renderGrid(items) {
   exampleModalFooter.style.display = 'none';
 }
 
+function renderGridLinks(items) {
+  exampleModalMedia.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'example-grid';
+  items.forEach((item, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'example-grid-item';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', item.caption || `Example ${index + 1}`);
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.caption || 'Work example thumbnail';
+    img.loading = 'lazy';
+    btn.appendChild(img);
+    btn.addEventListener('click', () => window.open(item.link, '_blank', 'noopener'));
+    grid.appendChild(btn);
+  });
+  exampleModalMedia.appendChild(grid);
+
+  exampleNavPrev.hidden = true;
+  exampleNavNext.hidden = true;
+  exampleCounter.hidden = true;
+  exampleBackGrid.hidden = true;
+  exampleModalFooter.style.display = 'none';
+}
+
 function renderLinksList(items) {
   exampleModalMedia.innerHTML = '';
   const list = document.createElement('div');
@@ -191,6 +217,8 @@ function openExampleModal(card) {
     renderLinksList(items);
   } else if (mode === 'grid') {
     renderGrid(items);
+  } else if (mode === 'grid-links') {
+    renderGridLinks(items);
   } else {
     galleryItems = items;
     galleryIndex = 0;
