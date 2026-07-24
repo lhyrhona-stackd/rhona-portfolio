@@ -79,34 +79,87 @@ const exampleModal = document.getElementById('exampleModal');
 const exampleModalMedia = document.getElementById('exampleModalMedia');
 const exampleModalCaption = document.getElementById('exampleModalCaption');
 const exampleModalLink = document.getElementById('exampleModalLink');
+const exampleModalFooter = document.getElementById('exampleModalFooter');
 const exampleModalClose = document.getElementById('exampleModalClose');
 const exampleModalBackdrop = document.getElementById('exampleModalBackdrop');
+const exampleNavPrev = document.getElementById('exampleNavPrev');
+const exampleNavNext = document.getElementById('exampleNavNext');
+const exampleCounter = document.getElementById('exampleCounter');
 
-function openExampleModal(card) {
-  const mode = card.dataset.mode;
-  const link = card.dataset.link;
+let galleryItems = [];
+let galleryIndex = 0;
 
-  if (mode === 'external') {
-    window.open(link, '_blank', 'noopener');
-    return;
-  }
-
+function renderGalleryItem(index) {
+  const item = galleryItems[index];
   exampleModalMedia.innerHTML = '';
-  if (mode === 'image') {
+
+  if (item.type === 'image') {
     const img = document.createElement('img');
-    img.src = card.dataset.src;
-    img.alt = card.dataset.caption || 'Work example';
+    img.src = item.src;
+    img.alt = item.caption || 'Work example';
     exampleModalMedia.appendChild(img);
-  } else if (mode === 'video') {
+  } else if (item.type === 'video') {
     const video = document.createElement('video');
-    video.src = card.dataset.src;
+    video.src = item.src;
     video.controls = true;
     video.autoplay = true;
     exampleModalMedia.appendChild(video);
   }
 
-  exampleModalCaption.textContent = card.dataset.caption || '';
-  exampleModalLink.href = link;
+  exampleModalCaption.textContent = item.caption || '';
+  exampleModalLink.href = item.link || '#';
+
+  const multi = galleryItems.length > 1;
+  exampleNavPrev.hidden = !multi;
+  exampleNavNext.hidden = !multi;
+  exampleCounter.hidden = !multi;
+  if (multi) exampleCounter.textContent = `${index + 1} / ${galleryItems.length}`;
+}
+
+function renderLinksList(items) {
+  exampleModalMedia.innerHTML = '';
+  const list = document.createElement('div');
+  list.className = 'example-links-list';
+  items.forEach(item => {
+    const a = document.createElement('a');
+    a.className = 'example-link-item';
+    a.href = item.href;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    const strong = document.createElement('strong');
+    strong.textContent = item.label;
+    const span = document.createElement('span');
+    span.textContent = item.caption || '';
+    a.appendChild(strong);
+    a.appendChild(span);
+    list.appendChild(a);
+  });
+  exampleModalMedia.appendChild(list);
+  exampleNavPrev.hidden = true;
+  exampleNavNext.hidden = true;
+  exampleCounter.hidden = true;
+  exampleModalFooter.style.display = 'none';
+}
+
+function openExampleModal(card) {
+  const mode = card.dataset.mode;
+
+  if (mode === 'external') {
+    window.open(card.dataset.link, '_blank', 'noopener');
+    return;
+  }
+
+  exampleModalFooter.style.display = '';
+  const items = JSON.parse(card.dataset.items);
+
+  if (mode === 'links') {
+    renderLinksList(items);
+  } else {
+    galleryItems = items;
+    galleryIndex = 0;
+    renderGalleryItem(galleryIndex);
+  }
+
   exampleModal.classList.add('open');
   document.body.style.overflow = 'hidden';
 }
@@ -115,7 +168,17 @@ function closeExampleModal() {
   exampleModal.classList.remove('open');
   document.body.style.overflow = '';
   exampleModalMedia.innerHTML = '';
+  galleryItems = [];
 }
+
+exampleNavPrev.addEventListener('click', () => {
+  galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
+  renderGalleryItem(galleryIndex);
+});
+exampleNavNext.addEventListener('click', () => {
+  galleryIndex = (galleryIndex + 1) % galleryItems.length;
+  renderGalleryItem(galleryIndex);
+});
 
 document.querySelectorAll('.service-card[data-mode]').forEach(card => {
   card.addEventListener('click', () => openExampleModal(card));
@@ -130,7 +193,10 @@ document.querySelectorAll('.service-card[data-mode]').forEach(card => {
 exampleModalClose.addEventListener('click', closeExampleModal);
 exampleModalBackdrop.addEventListener('click', closeExampleModal);
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape' && exampleModal.classList.contains('open')) closeExampleModal();
+  if (!exampleModal.classList.contains('open')) return;
+  if (e.key === 'Escape') closeExampleModal();
+  if (e.key === 'ArrowLeft' && galleryItems.length > 1) exampleNavPrev.click();
+  if (e.key === 'ArrowRight' && galleryItems.length > 1) exampleNavNext.click();
 });
 
 // ---------- Contact form (static — mailto fallback) ----------
