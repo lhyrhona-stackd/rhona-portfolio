@@ -345,23 +345,44 @@ p { color: var(--ink-soft); }
 }
 
 /* ---------- Services ---------- */
+.services-hint {
+  color: var(--ink-soft);
+  font-size: 0.95rem;
+  margin-top: -8px;
+}
 .services-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 24px;
-  margin-top: 56px;
+  margin-top: 40px;
 }
 .service-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 32px;
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
-.service-card:hover {
+.service-card:hover, .service-card:focus-visible {
   transform: translateY(-6px);
   box-shadow: var(--shadow);
   border-color: var(--accent);
+}
+.service-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.service-cta {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.service-card:hover .service-cta, .service-card:focus-visible .service-cta {
+  opacity: 1;
+  transform: translateX(0);
 }
 .service-icon {
   font-family: var(--font-display);
@@ -637,6 +658,91 @@ a.contact-item:hover { color: var(--accent-dark); }
 }
 .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
 .back-to-top:hover { background: var(--accent-dark); }
+
+/* ---------- Example Modal ---------- */
+.example-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.example-modal.open { display: flex; }
+.example-modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(20, 16, 12, 0.55);
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+.example-modal.open .example-modal-backdrop { opacity: 1; }
+.example-modal-card {
+  position: relative;
+  background: var(--card-bg);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: min(880px, 100%);
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.example-modal.open .example-modal-card { opacity: 1; transform: translateY(0) scale(1); }
+.example-modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: var(--ink);
+  color: var(--bg);
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+}
+.example-modal-frame-wrap {
+  background: var(--bg-alt);
+  flex: 1;
+  min-height: 320px;
+}
+.example-modal-frame-wrap iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 320px;
+  border: none;
+  display: block;
+}
+.example-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 24px;
+  border-top: 1px solid var(--border);
+}
+.example-modal-footer p { margin: 0; font-size: 0.9rem; }
+.example-modal-footer a {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--accent-dark);
+  white-space: nowrap;
+}
+.example-modal-footer a:hover { color: var(--accent); }
+
+@media (max-width: 720px) {
+  .example-modal-card { max-height: 92vh; }
+  .example-modal-frame-wrap { min-height: 220px; }
+  .example-modal-footer { flex-direction: column; align-items: flex-start; }
+}
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {

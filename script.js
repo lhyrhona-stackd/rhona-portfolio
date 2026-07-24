@@ -74,6 +74,52 @@ const statObserver = new IntersectionObserver((entries) => {
 
 statEls.forEach(el => statObserver.observe(el));
 
+// ---------- Service card example modal ----------
+const exampleModal = document.getElementById('exampleModal');
+const exampleModalFrame = document.getElementById('exampleModalFrame');
+const exampleModalCaption = document.getElementById('exampleModalCaption');
+const exampleModalLink = document.getElementById('exampleModalLink');
+const exampleModalClose = document.getElementById('exampleModalClose');
+const exampleModalBackdrop = document.getElementById('exampleModalBackdrop');
+
+function openExampleModal(card) {
+  const mode = card.dataset.mode;
+  const link = card.dataset.link;
+
+  if (mode === 'external') {
+    window.open(link, '_blank', 'noopener');
+    return;
+  }
+
+  exampleModalFrame.src = card.dataset.src;
+  exampleModalCaption.textContent = card.dataset.caption || '';
+  exampleModalLink.href = link;
+  exampleModal.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeExampleModal() {
+  exampleModal.classList.remove('open');
+  document.body.style.overflow = '';
+  exampleModalFrame.src = '';
+}
+
+document.querySelectorAll('.service-card[data-mode]').forEach(card => {
+  card.addEventListener('click', () => openExampleModal(card));
+  card.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openExampleModal(card);
+    }
+  });
+});
+
+exampleModalClose.addEventListener('click', closeExampleModal);
+exampleModalBackdrop.addEventListener('click', closeExampleModal);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && exampleModal.classList.contains('open')) closeExampleModal();
+});
+
 // ---------- Contact form (static — mailto fallback) ----------
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');

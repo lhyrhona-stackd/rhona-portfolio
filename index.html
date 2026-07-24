@@ -109,45 +109,95 @@
     <div class="container">
       <p class="eyebrow reveal center">What I Do</p>
       <h2 class="reveal center">Services built around how your business actually grows.</h2>
+      <p class="services-hint reveal center">Click any card to see a real example of the work.</p>
       <div class="services-grid">
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/1Vqjmz1HpqmuDsLhGFdMXujZCzNyQZdGq/preview"
+          data-link="https://drive.google.com/file/d/1Vqjmz1HpqmuDsLhGFdMXujZCzNyQZdGq/view"
+          data-caption="A branded social graphic designed in Canva for a client's content calendar.">
           <div class="service-icon">01</div>
           <h3>Social Media Management</h3>
           <p>Content planning, scheduling, captions, hashtag strategy, and engagement across Instagram, Facebook, LinkedIn, and TikTok.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/1lqgKOy8L6g7WHbwkyplI8qkJ70lzuH4k/preview"
+          data-link="https://drive.google.com/file/d/1lqgKOy8L6g7WHbwkyplI8qkJ70lzuH4k/view"
+          data-caption="A GoHighLevel automation workflow built for a client's lead follow-up system.">
           <div class="service-icon">02</div>
           <h3>CRM &amp; Marketing Automation</h3>
           <p>Full CRM builds in GoHighLevel — pipelines, tagging logic, smart lists, and automation workflows that nurture leads 24/7.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/1gOsn2yjUMyck0_7UmwoxoTfCLdwaR1YO/preview"
+          data-link="https://drive.google.com/file/d/1gOsn2yjUMyck0_7UmwoxoTfCLdwaR1YO/view"
+          data-caption="A landing page built and launched for a real client, Islandwide Foods.">
           <div class="service-icon">03</div>
           <h3>Funnel &amp; Landing Page Development</h3>
           <p>Opt-ins, sales pages, checkout flows, and thank-you pages — built, integrated, and QA tested end to end.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/1c51ocIxCyNk8ewNoNJ4MoMhsOUWgAtlYpc5UoWhPuLg/preview"
+          data-link="https://drive.google.com/file/d/1c51ocIxCyNk8ewNoNJ4MoMhsOUWgAtlYpc5UoWhPuLg/view"
+          data-caption="An email template library used for client nurture and campaign sends.">
           <div class="service-icon">04</div>
           <h3>Email &amp; SMS Marketing</h3>
           <p>Nurture sequences, launch campaigns, segmentation, and A/B testing to keep open rates and engagement climbing.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/18Yjo-unZDp6NgH7_sxfV8PC7xwkl_YqP/preview"
+          data-link="https://drive.google.com/file/d/18Yjo-unZDp6NgH7_sxfV8PC7xwkl_YqP/view"
+          data-caption="A CapCut-edited short-form Reel produced for a client's social feed.">
           <div class="service-icon">05</div>
           <h3>Content Creation &amp; Video Editing</h3>
           <p>Branded Canva graphics, carousels, and short-form video editing in CapCut — Reels, TikToks, and Shorts that convert.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="embed"
+          data-src="https://drive.google.com/file/d/12jNQRd72j-QGUsOO7c95JWkzF-7XxvpG/preview"
+          data-link="https://drive.google.com/file/d/12jNQRd72j-QGUsOO7c95JWkzF-7XxvpG/view"
+          data-caption="An invoice template used to keep client billing organized and professional.">
           <div class="service-icon">06</div>
           <h3>Executive &amp; Administrative Support</h3>
           <p>Inbox and calendar management, document prep, task coordination, and the day-to-day details that keep you moving.</p>
+          <span class="service-cta">View example →</span>
         </div>
-        <div class="service-card reveal">
+        <div class="service-card reveal" tabindex="0" role="button"
+          data-mode="external"
+          data-link="https://github.com/lhyrhona-stackd/rhona-portfolio"
+          data-caption="This portfolio site itself — built and automated with Claude.">
           <div class="service-icon">07</div>
           <h3>AI Automation &amp; Coding</h3>
           <p>AI-powered workflow automations, custom scripts, and lightweight tools built with Claude — connecting your apps, cleaning up repetitive tasks, and speeding up delivery.</p>
+          <span class="service-cta">View example →</span>
         </div>
       </div>
     </div>
   </section>
+
+  <!-- SERVICE EXAMPLE MODAL -->
+  <div class="example-modal" id="exampleModal">
+    <div class="example-modal-backdrop" id="exampleModalBackdrop"></div>
+    <div class="example-modal-card">
+      <button class="example-modal-close" id="exampleModalClose" aria-label="Close">&times;</button>
+      <div class="example-modal-frame-wrap">
+        <iframe id="exampleModalFrame" src="" title="Work example" allow="autoplay"></iframe>
+      </div>
+      <div class="example-modal-footer">
+        <p id="exampleModalCaption"></p>
+        <a id="exampleModalLink" href="#" target="_blank" rel="noopener">Open in Google Drive ↗</a>
+      </div>
+    </div>
+  </div>
 
   <!-- EXPERIENCE -->
   <section class="experience" id="experience">
