@@ -85,13 +85,16 @@ const exampleModalBackdrop = document.getElementById('exampleModalBackdrop');
 const exampleNavPrev = document.getElementById('exampleNavPrev');
 const exampleNavNext = document.getElementById('exampleNavNext');
 const exampleCounter = document.getElementById('exampleCounter');
+const exampleBackGrid = document.getElementById('exampleBackGrid');
 
 let galleryItems = [];
 let galleryIndex = 0;
+let cameFromGrid = false;
 
 function renderGalleryItem(index) {
   const item = galleryItems[index];
   exampleModalMedia.innerHTML = '';
+  exampleModalFooter.style.display = '';
 
   if (item.type === 'image') {
     const img = document.createElement('img');
@@ -114,6 +117,37 @@ function renderGalleryItem(index) {
   exampleNavNext.hidden = !multi;
   exampleCounter.hidden = !multi;
   if (multi) exampleCounter.textContent = `${index + 1} / ${galleryItems.length}`;
+  exampleBackGrid.hidden = !cameFromGrid;
+}
+
+function renderGrid(items) {
+  galleryItems = items;
+  exampleModalMedia.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.className = 'example-grid';
+  items.forEach((item, index) => {
+    const btn = document.createElement('button');
+    btn.className = 'example-grid-item';
+    btn.type = 'button';
+    btn.setAttribute('aria-label', item.caption || `Example ${index + 1}`);
+    const img = document.createElement('img');
+    img.src = item.src;
+    img.alt = item.caption || 'Work example thumbnail';
+    btn.appendChild(img);
+    btn.addEventListener('click', () => {
+      cameFromGrid = true;
+      galleryIndex = index;
+      renderGalleryItem(galleryIndex);
+    });
+    grid.appendChild(btn);
+  });
+  exampleModalMedia.appendChild(grid);
+
+  exampleNavPrev.hidden = true;
+  exampleNavNext.hidden = true;
+  exampleCounter.hidden = true;
+  exampleBackGrid.hidden = true;
+  exampleModalFooter.style.display = 'none';
 }
 
 function renderLinksList(items) {
@@ -150,10 +184,13 @@ function openExampleModal(card) {
   }
 
   exampleModalFooter.style.display = '';
+  cameFromGrid = false;
   const items = JSON.parse(card.dataset.items);
 
   if (mode === 'links') {
     renderLinksList(items);
+  } else if (mode === 'grid') {
+    renderGrid(items);
   } else {
     galleryItems = items;
     galleryIndex = 0;
@@ -169,7 +206,13 @@ function closeExampleModal() {
   document.body.style.overflow = '';
   exampleModalMedia.innerHTML = '';
   galleryItems = [];
+  cameFromGrid = false;
 }
+
+exampleBackGrid.addEventListener('click', () => {
+  cameFromGrid = false;
+  renderGrid(galleryItems);
+});
 
 exampleNavPrev.addEventListener('click', () => {
   galleryIndex = (galleryIndex - 1 + galleryItems.length) % galleryItems.length;
@@ -195,8 +238,8 @@ exampleModalBackdrop.addEventListener('click', closeExampleModal);
 document.addEventListener('keydown', (e) => {
   if (!exampleModal.classList.contains('open')) return;
   if (e.key === 'Escape') closeExampleModal();
-  if (e.key === 'ArrowLeft' && galleryItems.length > 1) exampleNavPrev.click();
-  if (e.key === 'ArrowRight' && galleryItems.length > 1) exampleNavNext.click();
+  if (e.key === 'ArrowLeft' && !exampleNavPrev.hidden) exampleNavPrev.click();
+  if (e.key === 'ArrowRight' && !exampleNavNext.hidden) exampleNavNext.click();
 });
 
 // ---------- Contact form (static — mailto fallback) ----------
