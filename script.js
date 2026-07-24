@@ -76,7 +76,7 @@ statEls.forEach(el => statObserver.observe(el));
 
 // ---------- Service card example modal ----------
 const exampleModal = document.getElementById('exampleModal');
-const exampleModalFrame = document.getElementById('exampleModalFrame');
+const exampleModalMedia = document.getElementById('exampleModalMedia');
 const exampleModalCaption = document.getElementById('exampleModalCaption');
 const exampleModalLink = document.getElementById('exampleModalLink');
 const exampleModalClose = document.getElementById('exampleModalClose');
@@ -91,7 +91,20 @@ function openExampleModal(card) {
     return;
   }
 
-  exampleModalFrame.src = card.dataset.src;
+  exampleModalMedia.innerHTML = '';
+  if (mode === 'image') {
+    const img = document.createElement('img');
+    img.src = card.dataset.src;
+    img.alt = card.dataset.caption || 'Work example';
+    exampleModalMedia.appendChild(img);
+  } else if (mode === 'video') {
+    const video = document.createElement('video');
+    video.src = card.dataset.src;
+    video.controls = true;
+    video.autoplay = true;
+    exampleModalMedia.appendChild(video);
+  }
+
   exampleModalCaption.textContent = card.dataset.caption || '';
   exampleModalLink.href = link;
   exampleModal.classList.add('open');
@@ -101,7 +114,7 @@ function openExampleModal(card) {
 function closeExampleModal() {
   exampleModal.classList.remove('open');
   document.body.style.overflow = '';
-  exampleModalFrame.src = '';
+  exampleModalMedia.innerHTML = '';
 }
 
 document.querySelectorAll('.service-card[data-mode]').forEach(card => {
