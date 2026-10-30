@@ -26,12 +26,17 @@ backToTop.addEventListener('click', () => {
 const navToggle = document.getElementById('navToggle');
 const mainNav = document.getElementById('mainNav');
 
+function setNavOpen(open) {
+  mainNav.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+}
+
 navToggle.addEventListener('click', () => {
-  mainNav.classList.toggle('open');
+  setNavOpen(!mainNav.classList.contains('open'));
 });
 
 mainNav.querySelectorAll('a').forEach(link => {
-  link.addEventListener('click', () => mainNav.classList.remove('open'));
+  link.addEventListener('click', () => setNavOpen(false));
 });
 
 // ---------- Reveal on scroll ----------
@@ -90,6 +95,7 @@ const exampleBackGrid = document.getElementById('exampleBackGrid');
 let galleryItems = [];
 let galleryIndex = 0;
 let cameFromGrid = false;
+let lastFocused = null;
 
 function renderGalleryItem(index) {
   const item = galleryItems[index];
@@ -198,6 +204,7 @@ function renderLinksList(items) {
   exampleNavPrev.hidden = true;
   exampleNavNext.hidden = true;
   exampleCounter.hidden = true;
+  exampleBackGrid.hidden = true;
   exampleModalFooter.style.display = 'none';
 }
 
@@ -225,8 +232,10 @@ function openExampleModal(card) {
     renderGalleryItem(galleryIndex);
   }
 
+  lastFocused = card;
   exampleModal.classList.add('open');
   document.body.style.overflow = 'hidden';
+  exampleModalClose.focus();
 }
 
 function closeExampleModal() {
@@ -235,6 +244,7 @@ function closeExampleModal() {
   exampleModalMedia.innerHTML = '';
   galleryItems = [];
   cameFromGrid = false;
+  if (lastFocused) lastFocused.focus();
 }
 
 exampleBackGrid.addEventListener('click', () => {
@@ -271,18 +281,25 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ---------- Contact form (static — mailto fallback) ----------
+// WEB3FORMS: once the access key is in index.html, replace the mailto lines below
+// with a fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(contactForm) })
+// and show the success/error message in formNote.
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');
 
 contactForm.addEventListener('submit', (e) => {
   e.preventDefault();
+  // Honeypot: bots fill hidden fields, people don't
+  if (document.getElementById('website').value) return;
+
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
+  const reason = document.getElementById('reason').value;
   const business = document.getElementById('business').value.trim();
 
-  const subject = encodeURIComponent(`Discovery Call Request from ${name}`);
-  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\nWhat I need help with:\n${business}`);
+  const subject = encodeURIComponent(`Discovery Call Request from ${name} — ${reason}`);
+  const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nReason: ${reason}\n\nWhat I need help with:\n${business}`);
   window.location.href = `mailto:santosrhonalhy@gmail.com?subject=${subject}&body=${body}`;
 
-  formNote.textContent = "Opening your email client — thanks for reaching out!";
+  formNote.textContent = "Opening your email app — if nothing opens, email me directly at santosrhonalhy@gmail.com.";
 });

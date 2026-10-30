@@ -1,0 +1,3 @@
+# GitHub Pages: keep internal notes off the published site
+exclude:
+  - PHASE-2.md
