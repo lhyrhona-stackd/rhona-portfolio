@@ -281,6 +281,9 @@ document.addEventListener('keydown', (e) => {
 });
 
 // ---------- Contact form (static — mailto fallback) ----------
+// WEB3FORMS: once the access key is in index.html, replace the mailto lines below
+// with a fetch('https://api.web3forms.com/submit', { method: 'POST', body: new FormData(contactForm) })
+// and show the success/error message in formNote.
 const contactForm = document.getElementById('contactForm');
 const formNote = document.getElementById('formNote');
 

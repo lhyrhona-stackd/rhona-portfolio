@@ -2,6 +2,8 @@
 
 Personal portfolio site for Rhona Lhy Santos, a Virtual Assistant & Marketing Operations Specialist.
 
+**Live site:** https://lhyrhona-stackd.github.io/rhona-portfolio/
+
 Static HTML/CSS/JS — no build step required. Open `index.html` directly in a browser, or serve the folder with any static file server.
 
 ## Structure
